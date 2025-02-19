@@ -23,6 +23,14 @@ constexpr std::array<std::pair<webrtc::VideoCodecType, mfxU32>, 4> MFX_CODEC_MAP
 
 namespace any_vpl {
 
+uint32_t Align16(uint32_t value) {
+  return (value + 15) & ~15UL;
+}
+
+uint32_t Align32(uint32_t value) {
+  return (value + 31) & ~31UL;
+}
+
 mfxU32 ToMfxCodec(webrtc::VideoCodecType codec) {
   for (const auto& pair : MFX_CODEC_MAP) {
     if (pair.first == codec) {

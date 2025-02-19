@@ -40,8 +40,8 @@ VplVideoEncoder::~VplVideoEncoder() {
 }
 
 mfxStatus VplVideoEncoder::ExecQuery(mfxVideoParam& param) {
-  mfxVideoParam queryParam;
-  memcpy(&queryParam, &param, sizeof(param));
+  mfxVideoParam queryParam = param;
+
   mfxStatus mfxSts = encoder_->Query(&queryParam, &queryParam);
 
   if (mfxSts >= 0) {
@@ -85,7 +85,7 @@ mfxStatus VplVideoEncoder::ExecQuery(mfxVideoParam& param) {
     PrintParamInfo(AsyncDepth);
     PrintParamInfo(IOPattern);
 
-    memcpy(&param, &queryParam, sizeof(param));
+    param = queryParam;
   }
   return mfxSts;
 }
@@ -93,7 +93,7 @@ mfxStatus VplVideoEncoder::ExecQuery(mfxVideoParam& param) {
 mfxStatus VplVideoEncoder::ExecQueries(mfxVideoParam& param, ExtBuffer& ext) {
   mfxStatus mfxSts = MFX_ERR_NONE;
 
-  memset(&param, 0, sizeof(param));
+  param = mfxVideoParam();
 
   param.mfx.CodecId = codec_;
 
@@ -132,8 +132,8 @@ mfxStatus VplVideoEncoder::ExecQueries(mfxVideoParam& param, ExtBuffer& ext) {
   // Width must be a multiple of 16
   // Height must be a multiple of 16 in case of frame picture and a multiple of
   // 32 in case of field picture
-  param.mfx.FrameInfo.Width = ALIGN16(width_);
-  param.mfx.FrameInfo.Height = ALIGN16(height_);
+  param.mfx.FrameInfo.Width = Align16(width_);
+  param.mfx.FrameInfo.Height = Align16(height_);
 
   param.mfx.GopRefDist = 1;
   param.AsyncDepth = 1;
@@ -478,8 +478,8 @@ int32_t VplVideoEncoder::InitVpl() {
   bitstream_.MaxLength = bitstreamBuffer_.size();
   bitstream_.Data = bitstreamBuffer_.data();
 
-  const int width = ALIGN32(allocRequest_.Info.Width);
-  const int height = ALIGN32(allocRequest_.Info.Height);
+  const int width = Align32(allocRequest_.Info.Width);
+  const int height = Align32(allocRequest_.Info.Height);
   // Number of bytes per page
   // NV12 => 12 bits per pixel
   const int size = width * height * 12 / 8;
