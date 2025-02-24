@@ -16,7 +16,7 @@ index 7cb713b..12ba096 100644
 +
 +  include_dirs = [
 +    "../../../../../", # Include the hw encoder implementation
-+    "/home/integration/libvpl/api/vpl/" # Include rest of the vpl headers from libvpl
++    "/usr/local/vplinstall/include/vpl" # Include the headers from libvpl
    ]
  
 -  defines = []

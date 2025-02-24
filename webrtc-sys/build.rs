@@ -135,7 +135,7 @@ fn main() {
             println!("cargo:rustc-link-lib=dylib=va");
             println!("cargo:rustc-link-lib=dylib=va-drm");
             
-            println!("cargo:rustc-link-search=/home/integration/libvpl/_build/");
+            println!("cargo:rustc-link-search=/usr/local/vplinstall/lib/");
             println!("cargo:rustc-link-lib=dylib=vpl");
 
             builder.flag("-std=c++2a");
